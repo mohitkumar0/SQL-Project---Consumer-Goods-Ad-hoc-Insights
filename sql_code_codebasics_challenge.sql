@@ -1,4 +1,39 @@
 # CODEBASICS_SQL_PROJECT_CHALLENGE 
+---------------------------------------------------------------------------------------------------------
+I create Master table for all ther Query 
+-------------------------------------------
+CREATE VIEW `master_left_join` AS
+    SELECT 
+        `f`.`date` AS `date`,
+        `f`.`product_code` AS `product_code`,
+        `f`.`customer_code` AS `customer_code`,
+        `f`.`sold_quantity` AS `sold_quantity`,
+        `f`.`fiscal_year` AS `fiscal_year`,
+        `d`.`customer` AS `customer`,
+        `d`.`platform` AS `platform`,
+        `d`.`channel` AS `channel`,
+        `d`.`sub_zone` AS `sub_zone`,
+        `d`.`region` AS `region`,
+        `d`.`market` AS `market`,
+        `p`.`division` AS `division`,
+        `p`.`segment` AS `segment`,
+        `p`.`category` AS `category`,
+        `p`.`product` AS `product`,
+        `p`.`variant` AS `variant`,
+        `g`.`gross_price` AS `gross_price`,
+        `m`.`manufacturing_cost` AS `manufacturing_cost`,
+        `i`.`pre_invoice_discount_pct` AS `pre_invoice_discount_pct`
+    FROM
+        (((((`gdb023`.`fact_sales_monthly` `f`
+        LEFT JOIN `gdb023`.`dim_customer` `d` ON ((`f`.`customer_code` = `d`.`customer_code`)))
+        LEFT JOIN `gdb023`.`dim_product` `p` ON ((`f`.`product_code` = `p`.`product_code`)))
+        LEFT JOIN `gdb023`.`fact_gross_price` `g` ON (((`f`.`product_code` = `g`.`product_code`)
+            AND (`f`.`fiscal_year` = `g`.`fiscal_year`))))
+        LEFT JOIN `gdb023`.`fact_manufacturing_cost` `m` ON (((`f`.`product_code` = `m`.`product_code`)
+            AND (`f`.`fiscal_year` = `m`.`cost_year`))))
+        LEFT JOIN `gdb023`.`fact_pre_invoice_deductions` `i` ON (((`f`.`customer_code` = `i`.`customer_code`)
+            AND (`f`.`fiscal_year` = `i`.`fiscal_year`))))
+------------------------------------------------------------------------------------------------------------------------           
 
 Q1 Provide the list of markets in which customer "Atliq Exclusive" operates its business in the APAC region.
 
